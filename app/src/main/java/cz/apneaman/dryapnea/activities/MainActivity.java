@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     TrainingAdapter trainingAdapter;
     RecyclerView recyclerView;
 
+    /* test gitu */
+
     /* Začátek každé aktivity */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
