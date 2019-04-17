@@ -3,7 +3,6 @@ package cz.apneaman.dryapnea.activities;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Random;
 
 import cz.apneaman.dryapnea.R;
 import cz.apneaman.dryapnea.db.dao.CounterDao;
@@ -23,6 +21,7 @@ import cz.apneaman.dryapnea.db.tables.Counter;
 import cz.apneaman.dryapnea.db.tables.Cycle;
 import cz.apneaman.dryapnea.db.tables.Settings;
 import cz.apneaman.dryapnea.db.tables.Training;
+import cz.apneaman.dryapnea.utils.Constants;
 import cz.apneaman.dryapnea.utils.SoundHelper;
 
 public class TrainingActivity extends AppCompatActivity {
@@ -33,6 +32,7 @@ public class TrainingActivity extends AppCompatActivity {
     private TextView infoTextView;
     private TextView breatheTimeTextView;
     private TextView holdTimeTextView;
+    private TextView txtTargetAction;
 
     private Training training;
     private Settings settings;
@@ -57,10 +57,11 @@ public class TrainingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_training);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        startButton = ((Button) findViewById(R.id.startButton));
-        infoTextView = ((TextView) findViewById(R.id.infoTextView));
-        breatheTimeTextView = ((TextView) findViewById(R.id.breatheTimeTextView));
-        holdTimeTextView = ((TextView) findViewById(R.id.holdTimeTextView));
+        startButton = findViewById(R.id.startButton);
+        infoTextView = findViewById(R.id.infoTextView);
+        breatheTimeTextView = findViewById(R.id.breatheTimeTextView);
+        holdTimeTextView = findViewById(R.id.holdTimeTextView);
+        txtTargetAction = findViewById(R.id.txt_target_action);
 
         int trainingId = getIntent().getIntExtra(DetailActivity.TRAINING_ID, -1);
 
@@ -70,6 +71,12 @@ public class TrainingActivity extends AppCompatActivity {
 
         training = TrainingDao.selectTrainingById(trainingId);
         settings = SettingsDao.selectSettingByTrainingId(trainingId);
+
+        if (training.getType().equals(Constants.STATIC_APNEA)) {
+            txtTargetAction.setText(R.string.stop_breathing_title);
+        } else {
+            txtTargetAction.setText(R.string.stop_breathing_title);
+        }
         /* Namapování sérií */
         cycles = CycleDao.selectCyclesByTraining(training);
         /* Zobrazení první série*/

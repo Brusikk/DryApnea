@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Dry Apnea</string>
+    <string name="btn_heartrate_title">Heart Rate Monitor</string>
+    <string name="btn_apnea_walking_title">Apnea Walking</string>
+    <string name="btn_static_apnea_title">Static Apnea</string>
+    <string name="menu_personal_records_title">Personal Records</string>
+    <string name="co2_table_title">CO2 tabulka</string>
+    <string name="breathing_title">Dýchání</string>
+    <string name="hint_120sec">120 s</string>
+    <string name="first_breath_stop_title">První zádrž nádechu</string>
+    <string name="breathing_shortage">Zkracování dýchání</string>
+    <string name="hint_15sec">15 s</string>
+    <string name="hint_series_8">8</string>
+    <string name="number_of_series">Počet sérií</string>
+    <string name="o2_table_title">O2 tabulka</string>
+    <string name="one_breath_table_title">One Breath tabulka</string>
+    <string name="stop_breathing_title">Zádrž dechu</string>
+    <string name="number_of_steps_title">Počet kroků</string>
+    <string name="hint_10sec">10 s</string>
+    <string name="hint_60sec">60 s</string>
+    <string name="hint_50_steps">50</string>
+    <string name="save">Uložit</string>
 </resources>

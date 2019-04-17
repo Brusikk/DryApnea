@@ -1,8 +1,5 @@
 package cz.apneaman.dryapnea.db.dao;
 
-import android.database.Cursor;
-
-import com.raizlabs.android.dbflow.sql.language.CursorResult;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import java.util.List;
@@ -19,6 +16,11 @@ public class TrainingDao {
     /* Seznam tréninků vytažený z db */
     public static List<Training> selectAllTrainings(){
         return SQLite.select().from(Training.class).queryList();
+    }
+
+    /* Seznam tréninků vytažený z db */
+    public static List<Training> selectAllTrainingsByType(String type){
+        return SQLite.select().from(Training.class).where(Training_Table.type.eq(type)).queryList();
     }
 
     /* Uložení nového tréninku do db */

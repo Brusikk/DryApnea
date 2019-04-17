@@ -34,10 +34,10 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txt_target_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Zádrž dechu"
             android:paddingTop="10dp"/>
 
         <TextView

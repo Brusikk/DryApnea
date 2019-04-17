@@ -20,13 +20,17 @@ public class Training extends BaseModel{
     @Column
     private Long timestamp;
 
+    @Column
+    private String type;
+
     /*Prázdnej konstruktor kvůli DB flow knihovně*/
     public Training() {
     }
 
-    public Training(String name) {
+    public Training(String name, String type) {
         this.name = name;
         this.timestamp = System.currentTimeMillis();
+        this.type = type;
     }
 
     public int getId() {
@@ -51,5 +55,13 @@ public class Training extends BaseModel{
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
