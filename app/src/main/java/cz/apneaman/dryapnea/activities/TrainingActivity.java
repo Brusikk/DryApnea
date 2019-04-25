@@ -1,10 +1,16 @@
 package cz.apneaman.dryapnea.activities;
 
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +30,9 @@ import cz.apneaman.dryapnea.db.tables.Training;
 import cz.apneaman.dryapnea.utils.Constants;
 import cz.apneaman.dryapnea.utils.SoundHelper;
 
-public class TrainingActivity extends AppCompatActivity {
+public class TrainingActivity extends AppCompatActivity implements SensorEventListener {
+
+    private static final String TAG = TrainingActivity.class.getSimpleName();
 
     private static final int ONE_SECOND = 500; //millis - ne tisíc protože to nefunguje a poslední vteřina se skipne
 
@@ -51,6 +59,13 @@ public class TrainingActivity extends AppCompatActivity {
     private boolean isRunning;
     private boolean isRunning2;
 
+    private long steps;
+    private boolean walkingStarted;
+
+    private SensorManager sManager;
+    private Sensor stepSensor;
+    private boolean isSensorPresent = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,14 +90,14 @@ public class TrainingActivity extends AppCompatActivity {
         if (training.getType().equals(Constants.STATIC_APNEA)) {
             txtTargetAction.setText(R.string.stop_breathing_title);
         } else {
-            txtTargetAction.setText(R.string.stop_breathing_title);
+            txtTargetAction.setText(R.string.number_of_steps_title);
         }
         /* Namapování sérií */
         cycles = CycleDao.selectCyclesByTraining(training);
         /* Zobrazení první série*/
         if (!cycles.isEmpty()) {
             breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
-            holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
+            holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? cycles.get(0).getHoldTime() + " sec" : cycles.get(0).getHoldTime()+"");
         }
 
         timerCanceled = false;
@@ -91,6 +106,26 @@ public class TrainingActivity extends AppCompatActivity {
         rip = false;
         isRunning = false;
         isRunning2 = false;
+        /*
+        if (walkingStarted) {
+                txtSteps.setVisibility(View.VISIBLE);
+                steps = 0;
+                txtSteps.setText(String.valueOf(steps));
+            } else {
+                txtSteps.setVisibility(View.INVISIBLE);
+            }
+            walkingStarted = !walkingStarted;
+         */
+
+        sManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        if(sManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
+            stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+            isSensorPresent = true;
+        } else {
+            isSensorPresent = false;
+        }
+
+        Log.e(TAG, "Sensor exists? - "+ isSensorPresent);
 
         /* Start training button*/
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +150,13 @@ public class TrainingActivity extends AppCompatActivity {
             /* Konec odpočtu - nastaví se první série */
             public void onFinish() {
                 infoTextView.setVisibility(View.GONE);
-                setupBreathTimer();
+                if (training.getType().equals(Constants.STATIC_APNEA)) {
+                    setupBreathTimer();
+                } else {
+                    walkingStarted = true;
+                    steps = cycles.get(0).getHoldTime();
+                    isRunning = true;
+                }
             }
         };
 
@@ -300,5 +341,37 @@ public class TrainingActivity extends AppCompatActivity {
 
     public void setIAmOk(boolean iAmOk) {
         this.iAmOk = iAmOk;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isSensorPresent) {
+            sManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isSensorPresent) {
+            sManager.unregisterListener(this);
+        }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+//        txtSteps.setText(String.valueOf(steps));
+        holdTimeTextView.setText((String.valueOf(steps)));
+        steps--;
+        if (steps == 0) {
+            cycles.remove(0);
+//            setupEnd();
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
     }
 }

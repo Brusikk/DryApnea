@@ -3,7 +3,7 @@
     <string name="btn_heartrate_title">Heart Rate Monitor</string>
     <string name="btn_apnea_walking_title">Apnea Walking</string>
     <string name="btn_static_apnea_title">Static Apnea</string>
-    <string name="menu_personal_records_title">Personal Records</string>
+    <string name="menu_personal_records_title">Osobní rekordy</string>
     <string name="co2_table_title">CO2 tabulka</string>
     <string name="breathing_title">Dýchání</string>
     <string name="hint_120sec">120 s</string>
@@ -20,4 +20,7 @@
     <string name="hint_60sec">60 s</string>
     <string name="hint_50_steps">50</string>
     <string name="save">Uložit</string>
+    <string name="btn_start_measuring">Spustit měření</string>
+    <string name="btn_stop_measuring">Zastavit měření</string>
+    <string name="bpm_label">bmp</string>
 </resources>

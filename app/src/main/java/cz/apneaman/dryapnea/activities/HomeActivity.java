@@ -15,9 +15,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
-    Button btnStaticApnea;
-    Button btnApneaWalking;
-    Button btnHeartRate;
+    private Button btnStaticApnea;
+    private Button btnApneaWalking;
+    private Button btnHeartRate;
 
     /* Začátek každé aktivity */
     @Override
@@ -47,6 +47,10 @@ public class HomeActivity extends AppCompatActivity {
 
         btnApneaWalking.setOnClickListener(l -> {
             startActivity(new Intent(HomeActivity.this, ApneaWalkingActivity.class));
+        });
+
+        btnHeartRate.setOnClickListener(l -> {
+            startActivity(new Intent(HomeActivity.this, HeartRateActivity.class));
         });
     }
 

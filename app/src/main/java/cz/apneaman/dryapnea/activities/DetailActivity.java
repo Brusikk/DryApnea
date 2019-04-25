@@ -140,6 +140,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DialogHelper.createCycleDialog(DetailActivity.this, training);
+                defaultTableLayout.setVisibility(View.GONE);
             }
         });
 
