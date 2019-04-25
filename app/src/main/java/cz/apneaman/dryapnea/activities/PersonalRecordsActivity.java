@@ -32,6 +32,7 @@ public class PersonalRecordsActivity extends AppCompatActivity {
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getString(R.string.personal_records_title));
 
         int time = 746;
         int steps = 123;
