@@ -37,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
     private Training training;
     private RecyclerView recyclerView;
     private CycleAdapter cycleAdapter;
-    private ConstraintLayout defaultTableLayout;
+    private static ConstraintLayout defaultTableLayout;
     private TextView txtTargetAction;
 
     private Button startButton;
@@ -140,7 +140,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DialogHelper.createCycleDialog(DetailActivity.this, training);
-                defaultTableLayout.setVisibility(View.GONE);
             }
         });
 
@@ -184,6 +183,12 @@ public class DetailActivity extends AppCompatActivity {
                 showCreateTrainingDialog(R.layout.dialog_one_breath_default, new TrainingType(TrainingType.ONE_BREATH));
             }
         });
+    }
+
+    public void hideDefaultTable() {
+        refreshList();
+        defaultTableLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showCreateTrainingDialog(int layoutId, final TrainingType type) {
@@ -247,9 +252,7 @@ public class DetailActivity extends AppCompatActivity {
                 Log.e(TAG, "Some unknown training type.");
                 break;
         }
-        recyclerView.setVisibility(View.VISIBLE);
-        defaultTableLayout.setVisibility(View.GONE);
-        refreshList();
+        hideDefaultTable();
     }
 
     private void generateO2Series(int numberOfSeries, int breathing, int breathHold, int shortage) {
