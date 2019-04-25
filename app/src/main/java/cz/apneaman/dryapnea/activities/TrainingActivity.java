@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -80,6 +81,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 
         int trainingId = getIntent().getIntExtra(DetailActivity.TRAINING_ID, -1);
 
+
         if (trainingId == -1) {
             finish();
         }
@@ -98,6 +100,10 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         if (!cycles.isEmpty()) {
             breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
             holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? cycles.get(0).getHoldTime() + " sec" : cycles.get(0).getHoldTime()+"");
+        } else {
+            /* Pokud není žádná série */
+            Toast.makeText(this, "Nejdříve přidejte série tréninku", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         timerCanceled = false;
