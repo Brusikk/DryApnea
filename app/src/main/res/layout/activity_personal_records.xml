@@ -48,7 +48,7 @@
                 app:srcCompat="@drawable/ic_bed" />
 
             <TextView
-                android:id="@+id/txt_longest_time"
+                android:id="@+id/txt_time_record"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -108,7 +108,7 @@
                 app:srcCompat="@drawable/ic_steps" />
 
             <TextView
-                android:id="@+id/txt_most_steps"
+                android:id="@+id/txt_steps_record"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

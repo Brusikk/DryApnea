@@ -13,8 +13,11 @@ public class PersonalRecordsActivity extends AppCompatActivity {
 
     private static final String TAG = PersonalRecordsActivity.class.getSimpleName();
 
-    TextView txtLongestTime;
-    TextView txtMostSteps;
+    TextView txtTimeRecord;
+    TextView txtStepsRecord;
+
+    int timeRecord = 76;
+    int stepsRecord = 123;
 
     /* Začátek každé aktivity */
     @Override
@@ -26,6 +29,9 @@ public class PersonalRecordsActivity extends AppCompatActivity {
         init();
     }
 
+    public void setTxtTimeRecord(TextView txtTimeRecord) {
+        this.txtTimeRecord = txtTimeRecord;
+    }
 
     /* Inicializace UI + tlacitek */
     private void init(){
@@ -34,14 +40,13 @@ public class PersonalRecordsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.personal_records_title));
 
-        int time = 746;
-        int steps = 123;
 
-        txtLongestTime = findViewById(R.id.txt_longest_time);
-        txtMostSteps = findViewById(R.id.txt_most_steps);
 
-        txtLongestTime.setText(DateUtils.formatElapsedTime(time));
-        txtMostSteps.setText(steps+"");
+        txtTimeRecord = findViewById(R.id.txt_time_record);
+        txtStepsRecord = findViewById(R.id.txt_steps_record);
+
+        txtTimeRecord.setText(DateUtils.formatElapsedTime(timeRecord));
+        txtStepsRecord.setText(stepsRecord+"");
     }
 
     @Override
