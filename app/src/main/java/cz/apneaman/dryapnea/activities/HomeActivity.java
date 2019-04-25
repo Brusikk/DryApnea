@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     /* Inicializace UI + tlacitek */
     private void init(){
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("");
 
         btnStaticApnea = findViewById(R.id.btn_static);
         btnApneaWalking = findViewById(R.id.btn_walking);

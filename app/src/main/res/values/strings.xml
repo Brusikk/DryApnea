@@ -23,4 +23,6 @@
     <string name="btn_start_measuring">Spustit měření</string>
     <string name="btn_stop_measuring">Zastavit měření</string>
     <string name="bpm_label">bmp</string>
+    <string name="txt_home_title">DRY APNEA</string>
+    <string name="txt_home_title_version">2.0</string>
 </resources>
