@@ -88,11 +88,11 @@ public class DetailActivity extends AppCompatActivity {
         setupButtons();
 
         if (training.getType().equals(Constants.STATIC_APNEA)) {
-            getSupportActionBar().setTitle(R.string.btn_static_apnea_title);
+            getSupportActionBar().setTitle(training.getName());
             txtTargetAction.setText(R.string.stop_breathing_title);
             setupDefaultTableLayout();
         } else {
-            getSupportActionBar().setTitle(R.string.btn_apnea_walking_title);
+            getSupportActionBar().setTitle(training.getName());
             txtTargetAction.setText(R.string.number_of_steps_title);
             recyclerView.setVisibility(View.VISIBLE);
         }
