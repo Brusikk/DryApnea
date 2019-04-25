@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Random;
 
 import cz.apneaman.dryapnea.R;
 import cz.apneaman.dryapnea.db.dao.CounterDao;
@@ -219,6 +220,12 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         }
     }
 
+    /* Generování náhodné hodnoty v rozmezí */
+    private int generateRandomBetween(int min, int max) {
+        Random r = new Random();
+        return r.nextInt(max - min) + min;
+    }
+
 
     /* Nastavení zádrže dechu */
     /* Vykonané série z listu mažu */
@@ -241,6 +248,19 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     }
                     holdTimeTextView.setText(DateUtils.formatElapsedTime(millisUntilFinished / 1000));
          //           holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
+                    long currentTime = (millisUntilFinished / 1000);
+                    if (cycles.get(0).getHoldTime() / 4 >= currentTime) {
+                        // poslední čtvrtina času
+                        if (currentTime % generateRandomBetween(10, 20) == 0) {
+                            Log.e(TAG, "give me feedback - last 1/4");
+                        }
+                    } else {
+                        // více než poslední čtvrtina
+                        if (currentTime % generateRandomBetween(25, 40) == 0) {
+                            Log.e(TAG, "give me feedback - 1 - 3/4");
+                        }
+                    }
+
                 }
 
                 /* Upozornění na ztrátu vědomí, jednou ze 30 tréninků */
