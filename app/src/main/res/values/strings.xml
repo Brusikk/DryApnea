@@ -4,6 +4,7 @@
     <string name="btn_apnea_walking_title">Apnea Walking</string>
     <string name="btn_static_apnea_title">Static Apnea</string>
     <string name="menu_personal_records_title">Osobní rekordy</string>
+    <string name="menu_import_export">Import/export</string>
     <string name="co2_table_title">CO2 tabulka</string>
     <string name="breathing_title">Dýchání</string>
     <string name="hint_120sec">120 s</string>

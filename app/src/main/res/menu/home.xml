@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/menu_personal_records"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
         android:icon="@drawable/ic_menu"
-        android:title="@string/menu_personal_records_title"
-        app:showAsAction="always"/>
+        android:title="MENU"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/menu_personal_records"
+                android:title="@string/menu_personal_records_title" />
+            <item
+                android:id="@+id/menu_import_export"
+                android:icon="@drawable/ic_import_export"
+                android:title="@string/menu_import_export" />
+
+        </menu>
+
+
+    </item>
+
 </menu>
