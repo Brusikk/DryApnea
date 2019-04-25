@@ -112,16 +112,6 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         rip = false;
         isRunning = false;
         isRunning2 = false;
-        /*
-        if (walkingStarted) {
-                txtSteps.setVisibility(View.VISIBLE);
-                steps = 0;
-                txtSteps.setText(String.valueOf(steps));
-            } else {
-                txtSteps.setVisibility(View.INVISIBLE);
-            }
-            walkingStarted = !walkingStarted;
-         */
 
         sManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
         if(sManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null) {
@@ -156,13 +146,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
             /* Konec odpočtu - nastaví se první série */
             public void onFinish() {
                 infoTextView.setVisibility(View.GONE);
-                if (training.getType().equals(Constants.STATIC_APNEA)) {
-                    setupBreathTimer();
-                } else {
-                    walkingStarted = true;
-                    steps = cycles.get(0).getHoldTime();
-                    isRunning = true;
-                }
+                setupBreathTimer();
             }
         };
 
@@ -199,24 +183,25 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     private void setupHoldTimer() {
         /* Nastavení hodnot z první pozice */
         breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
-        holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
-        isHoldTime = true;
-        countDownTimer = new CountDownTimer(cycles.get(0).getHoldTime() * 1000, ONE_SECOND) {
-            /* Jednou za vteřinu pípne */
-            @Override
-            public void onTick(long millisUntilFinished) {
-                isRunning = true;
-                if ((millisUntilFinished / 500) % 2 == 1) {   // Každou vteřinu splněno
-                    SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.AFTER_START, TrainingActivity.this, iAmOk);
+        if (training.getType().equals(Constants.STATIC_APNEA)) {
+            holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
+            isHoldTime = true;
+            countDownTimer = new CountDownTimer(cycles.get(0).getHoldTime() * 1000, ONE_SECOND) {
+                /* Jednou za vteřinu pípne */
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    isRunning = true;
+                    if ((millisUntilFinished / 500) % 2 == 1) {   // Každou vteřinu splněno
+                        SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.AFTER_START, TrainingActivity.this, iAmOk);
+                    }
+                    holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
                 }
-                holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
-            }
 
-            /* Upozornění na ztrátu vědomí, jednou ze 30 tréninků */
-            @Override
-            public void onFinish() {
-                isRunning = false;
-                CounterDao.createCounter(new Counter(cycles.get(0)));
+                /* Upozornění na ztrátu vědomí, jednou ze 30 tréninků */
+                @Override
+                public void onFinish() {
+                    isRunning = false;
+                    CounterDao.createCounter(new Counter(cycles.get(0)));
 //                if (new Random().nextInt(1) == 1) { //lze upravit
 //                    setupIamOkayMessage();
 //                } else {
@@ -229,8 +214,13 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                         setupEnd();
                     }
 //                }
-            }
-        };
+                }
+            };
+        } else {
+            walkingStarted = true;
+            steps = cycles.get(0).getHoldTime();
+            isRunning = true;
+        }
         countDownTimer.start();
     }
 
@@ -368,11 +358,13 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent event) {
 //        txtSteps.setText(String.valueOf(steps));
-        holdTimeTextView.setText((String.valueOf(steps)));
-        steps--;
-        if (steps == 0) {
-            cycles.remove(0);
-//            setupEnd();
+        if (walkingStarted) {
+            holdTimeTextView.setText((String.valueOf(steps)));
+            steps--;
+            if (steps == 0) {
+                cycles.remove(0);
+    //            setupEnd();
+            }
         }
     }
 

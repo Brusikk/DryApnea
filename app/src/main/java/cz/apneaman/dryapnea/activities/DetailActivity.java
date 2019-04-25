@@ -1,6 +1,5 @@
 package cz.apneaman.dryapnea.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -195,18 +194,8 @@ public class DetailActivity extends AppCompatActivity {
         final View dialogView = LayoutInflater.from(this).inflate(layoutId, null, false);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
-        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                generateTrainingSeries(dialogView, type);
-            }
-        });
-        builder.setNegativeButton(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+        builder.setPositiveButton(getString(R.string.save), (dialogInterface, i) -> generateTrainingSeries(dialogView, type));
+        builder.setNegativeButton(getString(android.R.string.cancel), (dialogInterface, i) -> dialogInterface.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
