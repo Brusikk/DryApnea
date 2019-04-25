@@ -72,7 +72,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="1 minuta" />
+                    android:text="1 minuta"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/toStart30secondsCheckBox"
@@ -80,7 +81,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="30 vteřin" />
+                    android:text="30 vteřin"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/toStart10secondsCheckBox"
@@ -88,7 +90,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="10 vteřin" />
+                    android:text="10 vteřin"
+                    android:checked="true"/>
 
                 <CheckBox
                     android:id="@+id/toStart5secondsCheckBox"
@@ -96,7 +99,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="5 vteřin" />
+                    android:text="5 vteřin"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/toStartNowCheckBox"
@@ -104,7 +108,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="Start" />
+                    android:text="Start"
+                    android:checked="true"/>
 
             </LinearLayout>
 
@@ -136,7 +141,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="1 minuta" />
+                    android:text="1 minuta"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/afterStart30secondsCheckBox"
@@ -144,7 +150,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="30 vteřin" />
+                    android:text="30 vteřin"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/afterStart10secondsCheckBox"
@@ -152,7 +159,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="10 vteřin" />
+                    android:text="10 vteřin"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/afterStart5secondsCheckBox"
@@ -160,7 +168,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="5 vteřin" />
+                    android:text="5 vteřin"
+                    android:checked="true" />
 
                 <CheckBox
                     android:id="@+id/afterStartNowCheckBox"
@@ -168,7 +177,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="24dp"
-                    android:text="Dýchej" />
+                    android:text="Dýchej"
+                    android:checked="true" />
             </LinearLayout>
 
         </LinearLayout>
