@@ -53,6 +53,8 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     private CountDownTimer countDownTimer;
     private CountDownTimer blackOutTimer;
 
+    int tempStepsRecord;
+
     private boolean needAttetion;
     private boolean isHoldTime;
     private boolean timerCanceled;
@@ -180,11 +182,44 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         });
     }
 
+    /* Nastavení dechové fáze */
+    private void setupBreathTimer() {
+        if (!cycles.isEmpty()) {
+            isHoldTime = false;
+            countDownTimer = new CountDownTimer(cycles.get(0).getBreathTime() * 1000, ONE_SECOND) {
+                /* Jednou za vteřinu pípne */
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    isRunning = true;
+                    if ((millisUntilFinished / 500) % 2 == 1) {  // Každou vteřinu splněno
+                        SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.TO_START, TrainingActivity.this, iAmOk);
+                    }
+
+                    breatheTimeTextView.setText(millisUntilFinished / 1000 + " sec");
+                }
+
+                /* Vykonané série z listu mažu */
+                @Override
+                public void onFinish() {
+                    isRunning = false;
+                    breatheTimeTextView.setText("Start");
+                    //cycles.remove(0); //odstraníme první série
+                    if (!cycles.isEmpty()) {
+                        setupHoldTimer();
+                    }
+                }
+            };
+            countDownTimer.start();
+        }
+    }
+
+
     /* Nastavení zádrže dechu */
     /* Vykonané série z listu mažu */
     private void setupHoldTimer() {
         /* Nastavení hodnot z první pozice */
         breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
+        /* Když je trénink typu STATIC APNEA */
         if (training.getType().equals(Constants.STATIC_APNEA)) {
             holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
             isHoldTime = true;
@@ -225,44 +260,21 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 //                }
                 }
             };
+
+            countDownTimer.start();
+        /* Trénink je typu APNEA WALKING */
         } else {
             walkingStarted = true;
             steps = cycles.get(0).getHoldTime();
+            tempStepsRecord = (int)steps;
             isRunning = true;
+            // TODO - spuštění krokoměru (funguje)
+ //           onSensorChanged(true);
         }
-        countDownTimer.start();
+
+//        countDownTimer.start();
     }
 
-    /* Nastavení dechové fáze */
-    private void setupBreathTimer() {
-        if (!cycles.isEmpty()) {
-            isHoldTime = false;
-            countDownTimer = new CountDownTimer(cycles.get(0).getBreathTime() * 1000, ONE_SECOND) {
-                /* Jednou za vteřinu pípne */
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    isRunning = true;
-                    if ((millisUntilFinished / 500) % 2 == 1) {  // Každou vteřinu splněno
-                        SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.TO_START, TrainingActivity.this, iAmOk);
-                    }
-
-                    breatheTimeTextView.setText(millisUntilFinished / 1000 + " sec");
-                }
-
-                /* Vykonané série z listu mažu */
-                @Override
-                public void onFinish() {
-                    isRunning = false;
-                    breatheTimeTextView.setText("Start");
-                    //cycles.remove(0); //odstraníme první série
-                    if (!cycles.isEmpty()) {
-                        setupHoldTimer();
-                    }
-                }
-            };
-            countDownTimer.start();
-        }
-    }
 
     /* Kontrola vědomí*/
     public void setupIamOkayMessage() {
@@ -366,13 +378,26 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        txtSteps.setText(String.valueOf(steps));
+        //TODO - odečítání kroků (funguje)
         if (walkingStarted) {
-            holdTimeTextView.setText((String.valueOf(steps)));
             steps--;
-            if (steps == 0) {
+            holdTimeTextView.setText((String.valueOf(steps)));
+            if (steps <= 0) {
                 cycles.remove(0);
-    //            setupEnd();
+                walkingStarted = false;
+                isRunning = false;
+
+                /* Osobní rekord - StepsRecord */
+                if (tempStepsRecord > PrefManager.getStepsRecord()) {
+                    PrefManager.setStepsRecord(tempStepsRecord);
+                }
+            /* Kroky dokončeny, začni dýchat */
+                if (!cycles.isEmpty()) {
+                    setupBreathTimer();
+                }
+                else {
+                    setupEnd();
+                }
             }
         }
     }
