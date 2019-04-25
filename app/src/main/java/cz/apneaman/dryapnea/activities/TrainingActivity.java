@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     private Button startButton;
     private TextView infoTextView;
     private TextView breatheTimeTextView;
+    private TextView breatheTimeTextView2;
     private TextView holdTimeTextView;
     private TextView txtTargetAction;
 
@@ -79,6 +81,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         startButton = findViewById(R.id.startButton);
         infoTextView = findViewById(R.id.infoTextView);
         breatheTimeTextView = findViewById(R.id.breatheTimeTextView);
+        breatheTimeTextView2 = findViewById(R.id.breatheTimeTextView2);
         holdTimeTextView = findViewById(R.id.holdTimeTextView);
         txtTargetAction = findViewById(R.id.txt_target_action);
 
@@ -102,8 +105,9 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         cycles = CycleDao.selectCyclesByTraining(training);
         /* Zobrazení první série*/
         if (!cycles.isEmpty()) {
-            breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
-            holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? cycles.get(0).getHoldTime() + " sec" : cycles.get(0).getHoldTime()+"");
+            breatheTimeTextView.setText(DateUtils.formatElapsedTime(cycles.get(0).getBreathTime()));
+  //          breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
+            holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? DateUtils.formatElapsedTime(cycles.get(0).getBreathTime()) : cycles.get(0).getHoldTime()+"");
         } else {
             /* Pokud není žádná série */
             Toast.makeText(this, "Nejdříve přidejte série tréninku", Toast.LENGTH_SHORT).show();
@@ -184,6 +188,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 
     /* Nastavení dechové fáze */
     private void setupBreathTimer() {
+        colorBreath();
         if (!cycles.isEmpty()) {
             isHoldTime = false;
             countDownTimer = new CountDownTimer(cycles.get(0).getBreathTime() * 1000, ONE_SECOND) {
@@ -195,7 +200,8 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                         SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.TO_START, TrainingActivity.this, iAmOk);
                     }
 
-                    breatheTimeTextView.setText(millisUntilFinished / 1000 + " sec");
+                    breatheTimeTextView.setText(DateUtils.formatElapsedTime(millisUntilFinished / 1000));
+     //               breatheTimeTextView.setText(millisUntilFinished / 1000 + " sec");
                 }
 
                 /* Vykonané série z listu mažu */
@@ -217,11 +223,13 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     /* Nastavení zádrže dechu */
     /* Vykonané série z listu mažu */
     private void setupHoldTimer() {
+        colorHold();
         /* Nastavení hodnot z první pozice */
-        breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
+        breatheTimeTextView.setText(DateUtils.formatElapsedTime(cycles.get(0).getBreathTime()));
         /* Když je trénink typu STATIC APNEA */
         if (training.getType().equals(Constants.STATIC_APNEA)) {
-            holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
+            holdTimeTextView.setText(DateUtils.formatElapsedTime(cycles.get(0).getHoldTime()));
+      //      holdTimeTextView.setText(cycles.get(0).getHoldTime() + " sec");
             isHoldTime = true;
             countDownTimer = new CountDownTimer(cycles.get(0).getHoldTime() * 1000, ONE_SECOND) {
                 /* Jednou za vteřinu pípne */
@@ -231,7 +239,8 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     if ((millisUntilFinished / 500) % 2 == 1) {   // Každou vteřinu splněno
                         SoundHelper.shouldBeep(getApplicationContext(), millisUntilFinished, SoundHelper.AFTER_START, TrainingActivity.this, iAmOk);
                     }
-                    holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
+                    holdTimeTextView.setText(DateUtils.formatElapsedTime(millisUntilFinished / 1000));
+         //           holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
                 }
 
                 /* Upozornění na ztrátu vědomí, jednou ze 30 tréninků */
@@ -400,6 +409,27 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                 }
             }
         }
+    }
+
+
+    public void colorBreath() {
+        /* Změna barvy textView */
+        breatheTimeTextView.setBackgroundResource(R.color.colorTrainingActive);
+        breatheTimeTextView.setTextSize(70);
+        breatheTimeTextView2.setBackgroundResource(R.color.colorTrainingActive);
+        holdTimeTextView.setBackgroundResource(R.color.colorTrainingPassive);
+        holdTimeTextView.setTextSize(42);
+        txtTargetAction.setBackgroundResource(R.color.colorTrainingPassive);
+    }
+
+    public void colorHold() {
+        /* Změna barvy textView */
+        breatheTimeTextView.setBackgroundResource(R.color.colorTrainingPassive);
+        breatheTimeTextView.setTextSize(42);
+        breatheTimeTextView2.setBackgroundResource(R.color.colorTrainingPassive);
+        holdTimeTextView.setBackgroundResource(R.color.colorTrainingActive);
+        holdTimeTextView.setTextSize(70);
+        txtTargetAction.setBackgroundResource(R.color.colorTrainingActive);
     }
 
     @Override

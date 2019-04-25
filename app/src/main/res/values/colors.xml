@@ -4,4 +4,6 @@
     <color name="colorPrimary">#11bbe6</color>
     <color name="colorAccent">#3485e9</color>
     <color name="colorTraining">#a5ddf7</color>
+    <color name="colorTrainingActive">#ffd480</color>
+    <color name="colorTrainingPassive">#cccccc</color>
 </resources>

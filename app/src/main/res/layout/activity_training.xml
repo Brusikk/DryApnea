@@ -6,14 +6,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TextView
+            android:id="@+id/breatheTimeTextView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Dýchání"
-            android:paddingTop="10dp"/>
+            android:textSize="15dp"
+            android:paddingTop="10dp"
+            android:background="@color/colorTrainingActive"/>
 
         <TextView
             android:id="@+id/breatheTimeTextView"
@@ -22,8 +26,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="-"
-            android:textSize="42dp"
-            />
+            android:textSize="70dp"
+            android:background="@color/colorTrainingActive"/>/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +42,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="10dp"/>
+            android:paddingTop="10dp"
+            android:textSize="15dp"
+            android:background="@color/colorTrainingPassive"/>
+        />
 
         <TextView
             android:id="@+id/holdTimeTextView"
@@ -47,7 +54,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="-"
-            android:textSize="42dp" />
+            android:textSize="42dp"
+            android:background="@color/colorTrainingPassive"/>
 
         <Button
             android:id="@+id/startButton"
