@@ -73,6 +73,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         setContentView(R.layout.activity_training);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         startButton = findViewById(R.id.startButton);
         infoTextView = findViewById(R.id.infoTextView);
         breatheTimeTextView = findViewById(R.id.breatheTimeTextView);
@@ -87,6 +88,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         }
 
         training = TrainingDao.selectTrainingById(trainingId);
+        setTitle(training.getName());
         settings = SettingsDao.selectSettingByTrainingId(trainingId);
 
         if (training.getType().equals(Constants.STATIC_APNEA)) {
@@ -220,6 +222,13 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 //                if (new Random().nextInt(1) == 1) { //lze upravit
 //                    setupIamOkayMessage();
 //                } else {
+
+                /* Kontrola osbního rekordu */
+             /*       if (cycles.get(0).getHoldTime() > timeRecord ) {
+                        timeRecord = ;
+                                setTxtTimeRecord(cycles.get(0).getHoldTime());
+                    }
+            */
                     holdTimeTextView.setText("Dýchej");
                     cycles.remove(0);
                     if (!cycles.isEmpty()) {
