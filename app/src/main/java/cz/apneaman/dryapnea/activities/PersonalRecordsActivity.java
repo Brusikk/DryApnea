@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import cz.apneaman.dryapnea.R;
+import cz.apneaman.dryapnea.preferences.PrefManager;
 
 public class PersonalRecordsActivity extends AppCompatActivity {
 
@@ -16,8 +17,6 @@ public class PersonalRecordsActivity extends AppCompatActivity {
     TextView txtTimeRecord;
     TextView txtStepsRecord;
 
-    int timeRecord = 76;
-    int stepsRecord = 123;
 
     /* Začátek každé aktivity */
     @Override
@@ -33,6 +32,8 @@ public class PersonalRecordsActivity extends AppCompatActivity {
         this.txtTimeRecord = txtTimeRecord;
     }
 
+
+
     /* Inicializace UI + tlacitek */
     private void init(){
 //        Toolbar toolbar = findViewById(R.id.toolbar);
@@ -45,8 +46,9 @@ public class PersonalRecordsActivity extends AppCompatActivity {
         txtTimeRecord = findViewById(R.id.txt_time_record);
         txtStepsRecord = findViewById(R.id.txt_steps_record);
 
-        txtTimeRecord.setText(DateUtils.formatElapsedTime(timeRecord));
-        txtStepsRecord.setText(stepsRecord+"");
+        txtTimeRecord.setText(DateUtils.formatElapsedTime(PrefManager.getTimeRecord()));
+        txtStepsRecord.setText(String.valueOf(PrefManager.getStepsRecord()));
+
     }
 
     @Override

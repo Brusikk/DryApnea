@@ -28,6 +28,7 @@ import cz.apneaman.dryapnea.db.tables.Counter;
 import cz.apneaman.dryapnea.db.tables.Cycle;
 import cz.apneaman.dryapnea.db.tables.Settings;
 import cz.apneaman.dryapnea.db.tables.Training;
+import cz.apneaman.dryapnea.preferences.PrefManager;
 import cz.apneaman.dryapnea.utils.Constants;
 import cz.apneaman.dryapnea.utils.SoundHelper;
 
@@ -72,7 +73,6 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
         startButton = findViewById(R.id.startButton);
         infoTextView = findViewById(R.id.infoTextView);
@@ -208,12 +208,12 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 //                    setupIamOkayMessage();
 //                } else {
 
-                /* Kontrola osbního rekordu */
-             /*       if (cycles.get(0).getHoldTime() > timeRecord ) {
-                        timeRecord = ;
-                                setTxtTimeRecord(cycles.get(0).getHoldTime());
+                /* Osobní rekord - TimeRecord */
+                   if (cycles.get(0).getHoldTime() > PrefManager.getTimeRecord()) {
+                       long record = cycles.get(0).getHoldTime();
+                        PrefManager.setTimeRecord((int) record);
                     }
-            */
+
                     holdTimeTextView.setText("Dýchej");
                     cycles.remove(0);
                     if (!cycles.isEmpty()) {

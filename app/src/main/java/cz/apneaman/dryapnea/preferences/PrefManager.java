@@ -26,7 +26,24 @@ public class PrefManager {
     public static final String AFTER_START_5_SECSONDS = "AFTER_START_5_SECSONDS";
     public static final String AFTER_START_0_SECSONDS = "AFTER_START_0_SECSONDS";
 
+    public static final String TIME_RECORD ="TIME_RECORD";
+    public static final String STEPS_RECORD ="STEPS_RECORD";
+
     /* Defaultní nastavení*/
+    public static int getTimeRecord() {
+        return DryapneaApplication.getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(TIME_RECORD, 0);
+    }
+    public static void setTimeRecord(int timeRecord) {
+        DryapneaApplication.getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putInt(TIME_RECORD, timeRecord).apply();
+    }
+
+    public static int getStepsRecord() {
+        return DryapneaApplication.getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(STEPS_RECORD, 0);
+    }
+    public static void setStepsRecord(int stepsRecord) {
+        DryapneaApplication.getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putInt(STEPS_RECORD, stepsRecord).apply();
+    }
+
     public static int getVolume() {
         return DryapneaApplication.getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE).getInt(VOLUME, 5);
     }
