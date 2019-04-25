@@ -193,7 +193,7 @@ public class DialogHelper {
                 if (!inputBreath.getText().toString().trim().isEmpty() && !inputActionValue.getText().toString().trim().isEmpty()) {
                     Cycle cycle = new Cycle(Long.valueOf(inputBreath.getText().toString().trim()), Long.valueOf(inputActionValue.getText().toString().trim()), training);
                     CycleDao.createOrUpdate(cycle);
-                    activity.refreshList();
+                    activity.hideDefaultTable();
                     dialog.cancel();
                 }
             }
