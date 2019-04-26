@@ -215,6 +215,8 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     isWaitingForFeedback = false;
                     blackOutTimer.cancel();
                     feedbackButton.setVisibility(View.GONE);
+                    /* Zapnutní hlášky - vidím */
+                    iAmOk = true;
                 }
             }
         });
@@ -226,6 +228,8 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     feedbackClickLongClick = false;
                     blackOutTimer.cancel();
                     feedbackButton.setVisibility(View.GONE);
+                    /* Zapnutní hlášky - vidím */
+                    iAmOk = true;
                 }
             }
             return false;
