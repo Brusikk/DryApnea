@@ -377,7 +377,6 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
             steps = cycles.get(0).getHoldTime();
             tempStepsRecord = (int)steps;
             isRunning = true;
-            // TODO - spuštění krokoměru (funguje)
  //           onSensorChanged(true);
         }
 
@@ -496,7 +495,6 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        //TODO - odečítání kroků (funguje)
         if (walkingStarted) {
             steps--;
             holdTimeTextView.setText((String.valueOf(steps)));

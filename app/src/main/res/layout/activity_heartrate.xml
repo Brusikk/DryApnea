@@ -48,6 +48,23 @@
             app:layout_constraintBottom_toBottomOf="@+id/txt_bpm"
             app:layout_constraintStart_toEndOf="@+id/txt_bpm" />
 
+        <ImageButton
+            android:id="@+id/imgBtnHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#00000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.125"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_help" />
+
     </android.support.constraint.ConstraintLayout>
 
     <SurfaceView
