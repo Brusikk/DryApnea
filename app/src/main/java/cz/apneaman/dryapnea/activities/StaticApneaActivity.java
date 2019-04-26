@@ -37,7 +37,7 @@ public class StaticApneaActivity extends AppCompatActivity {
 
 
         /* Seznam tréninků */
-        // Vždy přetypovávat - findVieWByID defaultně vrací typ View  FIXME: už se přetypovávat nemusí ;)
+        // Vždy přetypovávat - findVieWByID defaultně vrací typ View
         recyclerView = findViewById(R.id.recyclerView);
 
         setupAdapters();
