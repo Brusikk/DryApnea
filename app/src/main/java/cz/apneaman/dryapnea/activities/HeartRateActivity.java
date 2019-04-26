@@ -50,7 +50,7 @@ public class HeartRateActivity extends AppCompatActivity {
     private static double beats = 0;
     private static long startTime = 0;
 
-    private boolean isMeasuringStarted;
+    private static boolean isMeasuringStarted;
 
     private Button btnMeasuring;
     private static TextView txtBpm;
@@ -70,13 +70,13 @@ public class HeartRateActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.btn_heartrate_title));
 
-        imgBtnHelp = findViewById(R.id.imgBtnHelp);
-        imgBtnHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
+//        imgBtnHelp = findViewById(R.id.imgBtnHelp);
+//        imgBtnHelp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openDialog();
+//            }
+//        });
 
         preview = findViewById(R.id.preview);
 
@@ -88,10 +88,8 @@ public class HeartRateActivity extends AppCompatActivity {
 
         btnMeasuring.setOnClickListener(l -> {
             if(isMeasuringStarted) {
-                stopMeasuring();
                 btnMeasuring.setText(R.string.btn_start_measuring);
             } else {
-                startMeasuring();
                 btnMeasuring.setText(R.string.btn_stop_measuring);
             }
             isMeasuringStarted = !isMeasuringStarted;
@@ -200,7 +198,7 @@ public class HeartRateActivity extends AppCompatActivity {
 
         long endTime = System.currentTimeMillis();
         double totalTimeInSecs = (endTime - startTime) / 1000d;
-//        if (totalTimeInSecs >= 3) {
+        if (totalTimeInSecs >= 10 && isMeasuringStarted) {
             double bps = (beats / totalTimeInSecs);
             int dpm = (int) (bps * 60d);
             if (dpm < 30 || dpm > 180) {
@@ -226,7 +224,7 @@ public class HeartRateActivity extends AppCompatActivity {
             txtBpm.setText(String.format("%d", beatsAvg));
             startTime = System.currentTimeMillis();
             beats = 0;
-//        }
+        }
         processing.set(false);
     };
 
@@ -251,7 +249,7 @@ public class HeartRateActivity extends AppCompatActivity {
                 parameters.setPreviewSize(size.width, size.height);
                 Log.d(TAG, "Using width=" + size.width + " height=" + size.height);
             }
-//            camera.setParameters(parameters);
+            camera.setParameters(parameters);
             camera.startPreview();
         }
 

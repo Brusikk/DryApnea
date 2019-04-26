@@ -88,6 +88,14 @@ public class SoundHelper {
             mp = MediaPlayer.create(context, R.raw.thirty_seconds);
         } else if (seconds == 60) {
             mp = MediaPlayer.create(context, R.raw.one_minute);
+        } else if (seconds == 11) {
+            mp = MediaPlayer.create(context, R.raw.give_me_fist_signal);
+        } else if (seconds == 22) {
+            mp = MediaPlayer.create(context, R.raw.give_me_second_signal);
+        } else if (seconds == 33) {
+            mp = MediaPlayer.create(context, R.raw.give_me_third_signal);
+        } else if (seconds == 44) {
+            mp = MediaPlayer.create(context, R.raw.give_me_signal);
         } else {
             mp = MediaPlayer.create(context, R.raw.two_minutes);
         }
@@ -97,6 +105,11 @@ public class SoundHelper {
             mp.setVolume(PrefManager.getVolume(), PrefManager.getVolume());
             mp.start();
         }
+    }
+
+    /* feedback alarm */
+    public static void feedbackBeep(Context context, int type) {
+        beep(context, type);
     }
 
     /* Blackout alarm */

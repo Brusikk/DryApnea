@@ -275,21 +275,21 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         int type = generateRandomBetween(0, 3);
         switch (type) {
             case 0:
-                // TODO play first
+                SoundHelper.feedbackBeep(this, 11);
                 feedbackCountNeeded = 1;
                 feedbackClickLongClick = false;
                 break;
             case 1:
-                // TODO play second
+                SoundHelper.feedbackBeep(this, 22);
                 feedbackCountNeeded = 2;
                 feedbackClickLongClick = false;
                 break;
             case 3:
-                // TODO play third
+                SoundHelper.feedbackBeep(this, 33);
                 feedbackCountNeeded = 3;
                 feedbackClickLongClick = false;
             default:
-                // TODO play last
+                SoundHelper.feedbackBeep(this, 44);
                 feedbackCountNeeded = 1;
                 feedbackClickLongClick = true;
                 break;
