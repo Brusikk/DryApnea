@@ -77,7 +77,7 @@ public class SoundHelper {
         } else if (seconds == -2) {
             mp = MediaPlayer.create(context, R.raw.breathe);
         } else if (seconds == 0) {
-            mp = MediaPlayer.create(context, R.raw.start);
+            mp = MediaPlayer.create(context, R.raw.Start);
         } else if (seconds == 5) {
             mp = MediaPlayer.create(context, R.raw.five_seconds);
         } else if (seconds == 10) {
