@@ -118,7 +118,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         if (!cycles.isEmpty()) {
             breatheTimeTextView.setText(DateUtils.formatElapsedTime(cycles.get(0).getBreathTime()));
   //          breatheTimeTextView.setText(cycles.get(0).getBreathTime() + " sec");
-            holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? DateUtils.formatElapsedTime(cycles.get(0).getBreathTime()) : cycles.get(0).getHoldTime()+"");
+            holdTimeTextView.setText(training.getType().equals(Constants.STATIC_APNEA) ? DateUtils.formatElapsedTime(cycles.get(0).getHoldTime()) : cycles.get(0).getHoldTime()+"");
         } else {
             /* Pokud není žádná série */
             Toast.makeText(this, "Nejdříve přidejte série tréninku", Toast.LENGTH_SHORT).show();
