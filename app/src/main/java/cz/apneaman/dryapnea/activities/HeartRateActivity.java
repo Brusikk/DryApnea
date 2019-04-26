@@ -10,6 +10,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -54,6 +55,8 @@ public class HeartRateActivity extends AppCompatActivity {
     private Button btnMeasuring;
     private static TextView txtBpm;
 
+    private ImageButton imgBtnHelp;
+
     /* Začátek každé aktivity */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,14 @@ public class HeartRateActivity extends AppCompatActivity {
     private void init(){
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.btn_heartrate_title));
+
+        imgBtnHelp = findViewById(R.id.imgBtnHelp);
+        imgBtnHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
 
         preview = findViewById(R.id.preview);
 
@@ -85,6 +96,11 @@ public class HeartRateActivity extends AppCompatActivity {
             }
             isMeasuringStarted = !isMeasuringStarted;
         });
+    }
+
+    public void openDialog() {
+        HelpDialog helpDialog = new HelpDialog();
+        helpDialog.show(getSupportFragmentManager(), "help dialog");
     }
 
     @Override
