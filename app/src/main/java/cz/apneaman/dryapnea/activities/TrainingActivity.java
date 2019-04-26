@@ -2,10 +2,12 @@ package cz.apneaman.dryapnea.activities;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -41,6 +43,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     private static final int ONE_SECOND = 500; //millis - ne tisíc protože to nefunguje a poslední vteřina se skipne
 
     private Button startButton;
+    private Button feedbackButton;
     private TextView infoTextView;
     private TextView breatheTimeTextView;
     private TextView breatheTimeTextView2;
@@ -66,6 +69,12 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     private boolean isRunning;
     private boolean isRunning2;
 
+    private boolean isWaitingForFeedback;
+    private int feedbackClickCount;
+    private int feedbackCountNeeded;
+    private boolean feedbackClickLongClick;
+    private long startMillis = 0;
+
     private long steps;
     private boolean walkingStarted;
 
@@ -80,6 +89,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         startButton = findViewById(R.id.startButton);
+        feedbackButton = findViewById(R.id.feedbackButton);
         infoTextView = findViewById(R.id.infoTextView);
         breatheTimeTextView = findViewById(R.id.breatheTimeTextView);
         breatheTimeTextView2 = findViewById(R.id.breatheTimeTextView2);
@@ -185,6 +195,41 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                 }
             }
         });
+
+        feedbackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                long time = System.currentTimeMillis();
+
+                //if it is the first time, or if it has been more than 3 seconds since the first tap ( so it is like a new try), we reset everything
+                if (startMillis == 0 || (time - startMillis> 3000) ) {
+                    startMillis = time;
+                    feedbackClickCount = 1;
+                }
+                //it is not the first, and it has been  less than 3 seconds since the first
+                else{ //  time-startMillis< 3000
+                    feedbackClickCount++;
+                }
+
+                if (feedbackClickCount == feedbackCountNeeded) {
+                    isWaitingForFeedback = false;
+                    blackOutTimer.cancel();
+                    feedbackButton.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        feedbackButton.setOnLongClickListener(view -> {
+            if (feedbackClickLongClick) {
+                if (feedbackClickCount == feedbackCountNeeded) {
+                    isWaitingForFeedback = false;
+                    feedbackClickLongClick = false;
+                    blackOutTimer.cancel();
+                    feedbackButton.setVisibility(View.GONE);
+                }
+            }
+            return false;
+        });
     }
 
     /* Nastavení dechové fáze */
@@ -226,6 +271,34 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
         return r.nextInt(max - min) + min;
     }
 
+    private void selectFeedback() {
+        int type = generateRandomBetween(0, 3);
+        switch (type) {
+            case 0:
+                // TODO play first
+                feedbackCountNeeded = 1;
+                feedbackClickLongClick = false;
+                break;
+            case 1:
+                // TODO play second
+                feedbackCountNeeded = 2;
+                feedbackClickLongClick = false;
+                break;
+            case 3:
+                // TODO play third
+                feedbackCountNeeded = 3;
+                feedbackClickLongClick = false;
+            default:
+                // TODO play last
+                feedbackCountNeeded = 1;
+                feedbackClickLongClick = true;
+                break;
+        }
+        isWaitingForFeedback = true;
+        feedbackClickCount = 1;
+        Log.e(TAG, "case: "+ type);
+        feedbackButton.setVisibility(View.VISIBLE);
+    }
 
     /* Nastavení zádrže dechu */
     /* Vykonané série z listu mažu */
@@ -249,18 +322,22 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     holdTimeTextView.setText(DateUtils.formatElapsedTime(millisUntilFinished / 1000));
          //           holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
                     long currentTime = (millisUntilFinished / 1000);
-                    if (cycles.get(0).getHoldTime() / 4 >= currentTime) {
-                        // poslední čtvrtina času
-                        if (currentTime % generateRandomBetween(10, 20) == 0) {
-                            Log.e(TAG, "give me feedback - last 1/4");
-                        }
-                    } else {
-                        // více než poslední čtvrtina
-                        if (currentTime % generateRandomBetween(25, 40) == 0) {
-                            Log.e(TAG, "give me feedback - 1 - 3/4");
+                    if (!isWaitingForFeedback) {
+                        if (cycles.get(0).getHoldTime() / 4 >= currentTime) {
+                            // poslední čtvrtina času
+                            if (currentTime % generateRandomBetween(10, 20) == 0) {
+                                selectFeedback();
+                            }
+                        } else {
+                            // více než poslední čtvrtina
+                            if (currentTime % generateRandomBetween(25, 40) == 0) {
+                                selectFeedback();
+                            }
                         }
                     }
-
+                    if (isWaitingForFeedback) {
+                        blackout();
+                    }
                 }
 
                 /* Upozornění na ztrátu vědomí, jednou ze 30 tréninků */
@@ -308,7 +385,7 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
     /* Kontrola vědomí*/
     public void setupIamOkayMessage() {
         needAttetion = true;
-        startButton.setText("Jsem při vědomí");
+//        startButton.setText("Jsem při vědomí");
         blackOutTimer = new CountDownTimer(5000, ONE_SECOND) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -338,10 +415,19 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                 isRunning2 = false;
                 rip = true;
                 countDownTimer.cancel();
+                feedbackButton.setVisibility(View.GONE);
+                callNumber();
                 setupEnd();
             }
         };
         blackOutTimer.start();
+    }
+
+    private void callNumber() {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        String number = "123456789";
+        intent.setData(Uri.parse("tel:" + number));
+        this.startActivity(intent);
     }
 
     /* Konec tréninku */

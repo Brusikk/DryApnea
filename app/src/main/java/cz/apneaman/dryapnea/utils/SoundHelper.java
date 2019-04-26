@@ -29,7 +29,7 @@ public class SoundHelper {
             /* Dej mi signál */
             if (seconds == 20) {
                 beep(context, seconds);
-                trainingActivity.setupIamOkayMessage();
+//                trainingActivity.setupIamOkayMessage();
             }
             /* Jsem při vědomí */
             if (iAmOk) {
