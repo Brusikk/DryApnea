@@ -11,7 +11,7 @@ public class HelpDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Postup měření tepu")
-                .setMessage("1. Umísti prst na foťák" +"\n"+ "2. Nehýbej s ním" +"\n"+ "3. Měření probíhá 15 vteřin")
+                .setMessage("1. Umísti prst na foťák" +"\n"+ "2. Stiskni: START MĚŘENÍ" +"\n"+ "3. Nehýbej s prstem" +"\n"+ "4. Zobrazí se srdeční tep")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

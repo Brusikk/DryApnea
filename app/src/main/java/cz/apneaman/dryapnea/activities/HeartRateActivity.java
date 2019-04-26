@@ -70,13 +70,13 @@ public class HeartRateActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.btn_heartrate_title));
 
-//        imgBtnHelp = findViewById(R.id.imgBtnHelp);
-//        imgBtnHelp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                openDialog();
-//            }
-//        });
+        imgBtnHelp = findViewById(R.id.imgBtnHelp);
+        imgBtnHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });
 
         preview = findViewById(R.id.preview);
 
