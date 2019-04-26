@@ -36,9 +36,14 @@ public class HomeActivity extends AppCompatActivity {
         init();
 
         /* Když mejsou žádné tréninky, zadej testovací data */
-        List<Training> trainings = TrainingDao.selectAllTrainingsByType(Constants.STATIC_APNEA);
-        if (trainings.size()<= 0) {
-            fillDB();
+        List<Training> staticTrainings = TrainingDao.selectAllTrainingsByType(Constants.STATIC_APNEA);
+        if (staticTrainings.size()<= 0) {
+            fillDBStatic();
+        }
+
+        List<Training> walkingTrainings = TrainingDao.selectAllTrainingsByType(Constants.APNEA_WALKING);
+        if (walkingTrainings.size()<= 0) {
+            fillDBWalking();
         }
 
     }
@@ -71,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     /* Naplnění DB */
-    public void fillDB() {
+    public void fillDBStatic() {
         Training co2 = new Training("CO2 table", Constants.STATIC_APNEA);
         TrainingDao.create(co2);
         generateCO2Series(8,120,120,15, co2);
@@ -84,6 +89,12 @@ public class HomeActivity extends AppCompatActivity {
         TrainingDao.create(oneBreath);
         generateOneBreathSeries(8, 12, 60, oneBreath);
     }
+    public void fillDBWalking(){
+        Training co2Walking = new Training("CO2 Walking table", Constants.APNEA_WALKING);
+        TrainingDao.create(co2Walking);
+        generateOneBreathSeries(8, 120, 50, co2Walking);
+    }
+
 
     private void generateCO2Series(int numberOfSeries, int breathing, int breathHold, int shortage, Training training) {
         for (int i = 0; i < numberOfSeries; i++) {
@@ -103,13 +114,13 @@ public class HomeActivity extends AppCompatActivity {
             CycleDao.createOrUpdate(cycle);
         }
     }
- /*   private void generateWalkingSeries(int numberOfSeries, int breathing, int steps, Training training) {
+    private void generateWalkingSeries(int numberOfSeries, int breathing, int steps, Training training) {
         for (int i = 0; i < numberOfSeries; i++) {
-            Cycle cycle = new Cycle((long) breathing, (long) breathHold, training);
+            Cycle cycle = new Cycle((long) breathing, (long) steps, training);
             CycleDao.createOrUpdate(cycle);
         }
     }
-*/
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
