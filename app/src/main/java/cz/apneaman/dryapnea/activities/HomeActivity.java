@@ -9,7 +9,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.List;
+
 import cz.apneaman.dryapnea.R;
+import cz.apneaman.dryapnea.db.dao.CycleDao;
+import cz.apneaman.dryapnea.db.dao.TrainingDao;
+import cz.apneaman.dryapnea.db.tables.Cycle;
+import cz.apneaman.dryapnea.db.tables.Training;
+import cz.apneaman.dryapnea.utils.Constants;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -27,6 +34,13 @@ public class HomeActivity extends AppCompatActivity {
         /* Načtení layoutu activity */
         setContentView(R.layout.activity_home);
         init();
+
+        /* Když mejsou žádné tréninky, zadej testovací data */
+        List<Training> trainings = TrainingDao.selectAllTrainingsByType(Constants.STATIC_APNEA);
+        if (trainings.size()<= 0) {
+            fillDB();
+        }
+
     }
 
 
@@ -54,6 +68,48 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(HomeActivity.this, HeartRateActivity.class));
         });
     }
+
+
+    /* Naplnění DB */
+    public void fillDB() {
+        Training co2 = new Training("CO2 table", Constants.STATIC_APNEA);
+        TrainingDao.create(co2);
+        generateCO2Series(8,120,120,15, co2);
+
+        Training o2 = new Training("O2 table", Constants.STATIC_APNEA);
+        TrainingDao.create(o2);
+        generateO2Series(8,120,120,15, o2);
+
+        Training oneBreath = new Training("One Breath table", Constants.STATIC_APNEA);
+        TrainingDao.create(oneBreath);
+        generateOneBreathSeries(8, 12, 60, oneBreath);
+    }
+
+    private void generateCO2Series(int numberOfSeries, int breathing, int breathHold, int shortage, Training training) {
+        for (int i = 0; i < numberOfSeries; i++) {
+            Cycle cycle = new Cycle((long) breathing - i * shortage, (long) breathHold, training);
+            CycleDao.createOrUpdate(cycle);
+        }
+    }
+    private void generateO2Series(int numberOfSeries, int breathing, int breathHold, int shortage, Training training) {
+        for (int i = 0; i < numberOfSeries; i++) {
+            Cycle cycle = new Cycle((long) breathing - i * shortage, (long) breathHold, training);
+            CycleDao.createOrUpdate(cycle);
+        }
+    }
+    private void generateOneBreathSeries(int numberOfSeries, int breathing, int breathHold, Training training) {
+        for (int i = 0; i < numberOfSeries; i++) {
+            Cycle cycle = new Cycle((long) breathing, (long) breathHold, training);
+            CycleDao.createOrUpdate(cycle);
+        }
+    }
+ /*   private void generateWalkingSeries(int numberOfSeries, int breathing, int steps, Training training) {
+        for (int i = 0; i < numberOfSeries; i++) {
+            Cycle cycle = new Cycle((long) breathing, (long) breathHold, training);
+            CycleDao.createOrUpdate(cycle);
+        }
+    }
+*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
