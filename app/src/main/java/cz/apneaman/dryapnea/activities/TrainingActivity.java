@@ -322,20 +322,23 @@ public class TrainingActivity extends AppCompatActivity implements SensorEventLi
                     holdTimeTextView.setText(DateUtils.formatElapsedTime(millisUntilFinished / 1000));
          //           holdTimeTextView.setText(millisUntilFinished / 1000 + " sec");
                     long currentTime = (millisUntilFinished / 1000);
+                    Log.e(TAG, currentTime+"s");
                     if (!isWaitingForFeedback) {
                         if (cycles.get(0).getHoldTime() / 4 >= currentTime) {
+                            Log.e(TAG, "posl. 1/4: "+ (cycles.get(0).getHoldTime() / 4 >= currentTime));
                             // poslední čtvrtina času
                             if (currentTime % generateRandomBetween(10, 20) == 0) {
                                 selectFeedback();
                             }
                         } else {
+                            Log.e(TAG, "1 - 1/4: ");
                             // více než poslední čtvrtina
                             if (currentTime % generateRandomBetween(25, 40) == 0) {
                                 selectFeedback();
                             }
                         }
                     }
-                    if (isWaitingForFeedback) {
+                    if (isWaitingForFeedback && !isRunning2) {
                         blackout();
                     }
                 }
